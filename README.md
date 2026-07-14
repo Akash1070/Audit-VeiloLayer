@@ -26,13 +26,13 @@ The audit identified **2 CRITICAL**, **5 HIGH**, **2 MEDIUM**, and **2 LOW** sev
 | **HIGH-001** | 🟠 HIGH | Jupiter Route Injection (No Intermediate Mint Check) | Malicious whitelisted relayer can siphon swap value via fake intermediate tokens. | [HIGH-001 writeup](./findings/HIGH-001-jupiter-route-injection.md) |
 | **HIGH-002** | 🟠 HIGH | Position PDA Key Unbound in ZK Proof | Position hijacking via public input substitution in proof verification. | [HIGH-002/HIGH-003 writeup](./findings/HIGH-002-003-MED-001-findings.md#high-002-position-pda-key-not-bound-in-zk-proof---position-hijacking) |
 | **HIGH-003** | 🟠 HIGH | Phoenix `ember_unwrap` Over-Credit before Cap Check | Accumulation of reissued USDC beyond the designated withdrawal cap. | [HIGH-002/HIGH-003 writeup](./findings/HIGH-002-003-MED-001-findings.md#high-003-phoenix-ember_unwrap---cumulative-over-credit-before-slot-cap-check) |
-| **NEW-001** | 🟠 HIGH | Cross-Namespace Nullifier Reuse | Double-spending nullifiers across `transact_swap` and `transact` instructions. | [Additional Findings](./findings/DEEP-SCAN-additional-findings.md#new-001--medium-high-cross-tree-nullifier-reuse-in-reissue-paths) |
-| **NEW-005** | 🟠 HIGH | `fund_native_open_position` Missing Instruction Pairing | Atomic check bypass allowing relayer to drain funded WSOL. | [Additional Findings](./findings/DEEP-SCAN-additional-findings.md#new-005--high-fund_native_open_position--missing-atomic-pairing-validation) |
+| **NEW-001** | 🟠 HIGH | Cross-Namespace Nullifier Reuse | Double-spending nullifiers across `transact_swap` and `transact` instructions. | [NEW-001 writeup](./findings/NEW-001-cross-namespace-nullifier-reuse.md) |
+| **NEW-005** | 🟠 HIGH | `fund_native_open_position` Missing Instruction Pairing | Atomic check bypass allowing relayer to drain funded WSOL. | [NEW-005 writeup](./findings/NEW-005-fund-native-position-bypass.md) |
 | **MED-001** | 🟡 MEDIUM | `reduce_to_field` Off-by-One on `FR_MODULUS` Equality | Input exactly matching `FR_MODULUS` results in a degenerate zero element. | [HIGH-002/HIGH-003 writeup](./findings/HIGH-002-003-MED-001-findings.md#medium-001-reduce_to_field-off-by-one---fr_modulus-itself-not-reduced) |
-| **NEW-004** | 🟡 MEDIUM | Executor PDA Pre-Seeding DoS / Rent-Griefing | Permanent DoS locking users out of swapping specific nullifiers. | [Additional Findings](./findings/DEEP-SCAN-additional-findings.md#new-004--high-executor-account-not-zeroed-after-use--rent-drain) |
-| **NEW-002** | 🟡 MEDIUM | Permissionless Relayer on Deposits | Timing privacy leakage and fee front-running vulnerability. | [Additional Findings](./findings/DEEP-SCAN-additional-findings.md#new-002--medium-transact-deposit-accepts-any-relayer-no-relayer-authorization-for-deposits) |
-| **NEW-003** | 🟢 LOW | `stage_swap_legs` Buffer Linkage DoS | Griefing vector allowing relayers to invalidate user proofs before submission. | [Additional Findings](./findings/DEEP-SCAN-additional-findings.md#new-003--medium-stage_swap_legs-buffer-linkage-is-commitment-only) |
-| **NEW-006** | 🟢 LOW | No Admin Rotation Timelock | Key compromise risk without multi-sig or timelock safeguards. | [Additional Findings](./findings/DEEP-SCAN-additional-findings.md#new-006--low-global_config-admin-rotation-has-no-timelock) |
+| **NEW-004** | 🟡 MEDIUM | Executor PDA Pre-Seeding DoS / Rent-Griefing | Permanent DoS locking users out of swapping specific nullifiers. | [NEW-004 writeup](./findings/NEW-004-executor-pda-dos.md) |
+| **NEW-002** | 🟡 MEDIUM | Permissionless Relayer on Deposits | Timing privacy leakage and fee front-running vulnerability. | [NEW-002 writeup](./findings/NEW-002-deposit-relayer-bypass.md) |
+| **NEW-003** | 🟢 LOW | `stage_swap_legs` Buffer Linkage DoS | Griefing vector allowing relayers to invalidate user proofs before submission. | [NEW-003 writeup](./findings/NEW-003-stage-swap-legs-dos.md) |
+| **NEW-006** | 🟢 LOW | No Admin Rotation Timelock | Key compromise risk without multi-sig or timelock safeguards. | [NEW-006 writeup](./findings/NEW-006-no-timelock.md) |
 
 ---
 
@@ -53,11 +53,18 @@ For full details, including root cause, step-by-step attack vectors, and specifi
    * **HIGH-002:** `position_pda_key` is not bound to ZK public inputs, enabling relayer hijacking of opened positions.
    * **HIGH-003:** Phoenix `ember_unwrap` cap check runs pre-increment, allowing cumulative over-credit of USDC.
    * **MED-001:** `reduce_to_field` comparison loop has an off-by-one error, letting `FR_MODULUS` equal inputs bypass reduction to `0`.
-5. **[DEEP-SCAN-additional-findings: Deep Final Scan Results](./findings/DEEP-SCAN-additional-findings.md)**
-   * **NEW-001 (HIGH):** Use of `nullifier_v3` vs `source_nullifier_v3` enables cross-instruction nullifier reuse.
-   * **NEW-005 (HIGH):** `fund_native_open_position` lacks sysvar instruction pairing, allowing relayer to drain funded WSOL.
-   * **NEW-004 (MEDIUM):** Executor PDA is not closed, enabling rent-prefunding DoS attacks on specific nullifiers.
-   * **NEW-002 (MEDIUM):** Relayer whitelist skipped for deposits, allowing timing attacks and fee front-running.
+5. **[NEW-001: Cross-Namespace Nullifier Reuse](./findings/NEW-001-cross-namespace-nullifier-reuse.md)**
+   * Double-spending nullifiers across instruction namespaces.
+6. **[NEW-002: Deposit Relayer Whitelist Bypass](./findings/NEW-002-deposit-relayer-bypass.md)**
+   * Bypassing whitelists on deposit operations causing privacy reduction and fee manipulation.
+7. **[NEW-003: stage_swap_legs Buffer Linkage DoS](./findings/NEW-003-stage-swap-legs-dos.md)**
+   * Buffer PDA validation race condition allowing DoS.
+8. **[NEW-004: Executor PDA Rent-Griefing DoS](./findings/NEW-004-executor-pda-dos.md)**
+   * Rent-injection preventing future swaps on targeted nullifiers.
+9. **[NEW-005: fund_native_open_position Missing Instruction Pairing](./findings/NEW-005-fund-native-position-bypass.md)**
+   * Isolated funding calls enabling unauthorized WSOL extraction from vault.
+10. **[NEW-006: No Admin Rotation Timelock](./findings/NEW-006-no-timelock.md)**
+    * Instant configuration updates without timelocks.
 
 ---
 
