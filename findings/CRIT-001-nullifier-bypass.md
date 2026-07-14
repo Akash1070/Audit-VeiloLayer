@@ -177,3 +177,11 @@ let new_reissued = ctx.accounts.jperp_slot.reissued
 )]
 pub pending_reissue: Box<Account<'info, PhoenixPendingReissue>>,
 ```
+
+---
+
+## 6. Associated Files
+
+*   **Remediation Patch:** [patch-CRIT-001.rs](../patches/patch-CRIT-001.rs)
+*   **Security Test:** [test-CRIT-001.rs](../patches/test-CRIT-001.rs)
+*   **Proof of Concept:** [poc-CRIT-001.ts](../poc/poc-CRIT-001.ts)

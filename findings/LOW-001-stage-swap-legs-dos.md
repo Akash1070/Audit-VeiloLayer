@@ -1,4 +1,4 @@
-# NEW-003: `stage_swap_legs` Buffer Linkage DoS
+# LOW-001: `stage_swap_legs` Buffer Linkage DoS
 
 **Severity:** LOW  
 **Impact:** Denial of Service (DoS) preventing users from submitting valid swap transactions.  
@@ -23,3 +23,11 @@ If a relayer or an attacker front-runs the `open_position` instruction with a `c
 ## 3. Fix
 
 Integrate the routing data into the instruction transaction directly or restrict the closing of swap legs buffers until the swap execution has completely finished within the same atomic transaction block.
+
+---
+
+## 4. Associated Files
+
+*   **Remediation Patch:** [patch-LOW-001.rs](../patches/patch-LOW-001.rs)
+*   **Security Test:** [test-LOW-001.rs](../patches/test-LOW-001.rs)
+*   **Proof of Concept:** [poc-LOW-001.ts](../poc/poc-LOW-001.ts)

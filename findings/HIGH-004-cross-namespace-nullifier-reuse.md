@@ -1,6 +1,6 @@
-# NEW-001: Cross-Namespace Nullifier Reuse
+# HIGH-004: Cross-Namespace Nullifier Reuse
 
-**Severity:** MEDIUM-HIGH  
+**Severity:** HIGH  
 **Impact:** Double-spend across instruction types (e.g., spending nullifier via `transact_swap` and then reusing it in `transact`)  
 **Status:** Unpatched
 
@@ -40,7 +40,6 @@ Because `transact_swap` and `transact` write to different namespaces, they resol
 
 Consolidate all nullifier markers into a single namespace across all instruction paths (transact, transact_swap, and reissue instructions).
 
-```rust
-// Use a single prefix (e.g., nullifier_v4) for all instructions:
-seeds = [b"nullifier_v4", mint_address.as_ref(), input_nullifier_0.as_ref()]
-```
+*   **Remediation Patch:** [patch-HIGH-004.rs](../patches/patch-HIGH-004.rs)
+*   **Security Test:** [test-HIGH-004.rs](../patches/test-HIGH-004.rs)
+*   **Proof of Concept:** [poc-HIGH-004.ts](../poc/poc-HIGH-004.ts)

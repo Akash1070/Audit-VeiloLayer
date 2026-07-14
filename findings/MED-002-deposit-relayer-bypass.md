@@ -1,4 +1,4 @@
-# NEW-002: Deposit Relayer Whitelist Bypass
+# MED-002: Deposit Relayer Whitelist Bypass
 
 **Severity:** MEDIUM  
 **Impact:** Timing privacy leakage, fee front-running, and griefing via unwhitelisted deposit submissions.  
@@ -32,3 +32,11 @@ While deposits are permissionless to allow anyone to deposit funds, skipping the
 ## 3. Fix
 
 Enforce that the submitting relayer must be whitelisted even for deposits, or explicitly separate the depositor authority from the relayer fee-recipient key to prevent fee-jacking.
+
+---
+
+## 4. Associated Files
+
+*   **Remediation Patch:** [patch-MED-002.rs](../patches/patch-MED-002.rs)
+*   **Security Test:** [test-MED-002.rs](../patches/test-MED-002.rs)
+*   **Proof of Concept:** [poc-MED-002.ts](../poc/poc-MED-002.ts)

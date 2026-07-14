@@ -1,4 +1,4 @@
-# NEW-006: No Admin Rotation Timelock
+# LOW-002: No Admin Rotation Timelock
 
 **Severity:** LOW  
 **Impact:** Operational key compromise vulnerability.  
@@ -24,3 +24,11 @@ The configuration is updated instantly. In the event of a key compromise of the 
 ## 2. Recommendation
 
 Introduce a timelock mechanism or a multi-step admin rotation process (e.g., a two-step transfer where the new admin must claim the role after a delay) to allow the community or multi-sig guardians to intervene in the event of an emergency.
+
+---
+
+## 3. Associated Files
+
+*   **Remediation Patch:** [patch-LOW-002.rs](../patches/patch-LOW-002.rs)
+*   **Security Test:** [test-LOW-002.rs](../patches/test-LOW-002.rs)
+*   **Proof of Concept:** [poc-LOW-002.ts](../poc/poc-LOW-002.ts)

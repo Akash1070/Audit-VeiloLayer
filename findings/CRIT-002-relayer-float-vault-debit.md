@@ -172,7 +172,6 @@ Once Patch A is applied, the post-CPI block at lines 983–993 must be removed t
 
 The cleanest fix is to **require** `is_prefunded == 1` for all native SOL swaps, making `fund_native_source` mandatory. This eliminates the ordering complexity:
 
-```rust
 // In transact_swap, native SOL branch:
 if source_is_native {
     require!(executor.is_prefunded == 1, PrivacyError::InvalidSwapParams);
@@ -180,3 +179,11 @@ if source_is_native {
     token::sync_native(...)?;
 }
 ```
+
+---
+
+## 5. Associated Files
+
+*   **Remediation Patch:** [patch-CRIT-002.rs](../patches/patch-CRIT-002.rs)
+*   **Security Test:** [test-CRIT-002.rs](../patches/test-CRIT-002.rs)
+*   **Proof of Concept:** [poc-CRIT-002.ts](../poc/poc-CRIT-002.ts)

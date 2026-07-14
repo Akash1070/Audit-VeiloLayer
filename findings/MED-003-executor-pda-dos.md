@@ -1,4 +1,4 @@
-# NEW-004: Executor PDA Rent-Griefing (DoS)
+# MED-003: Executor PDA Rent-Griefing (DoS)
 
 **Severity:** MEDIUM  
 **Impact:** Permanent Denial of Service (DoS) locking specific nullifiers out of the swap loop.  
@@ -52,3 +52,11 @@ Use `init_if_needed` for the executor PDA and check whether the executor is alre
 pub executor: Account<'info, Executor>,
 ```
 In the handler, verify that if it is already initialized, it matches the current swap context.
+
+---
+
+## 4. Associated Files
+
+*   **Remediation Patch:** [patch-MED-003.rs](../patches/patch-MED-003.rs)
+*   **Security Test:** [test-MED-003.rs](../patches/test-MED-003.rs)
+*   **Proof of Concept:** [poc-MED-003.ts](../poc/poc-MED-003.ts)

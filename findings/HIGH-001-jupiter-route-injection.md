@@ -28,3 +28,11 @@ require!(
     PrivacyError::JupiterInvalidInstruction
 );
 ```
+
+---
+
+## Associated Files
+
+*   **Remediation Patch:** [patch-HIGH-001.rs](../patches/patch-HIGH-001.rs)
+*   **Security Test:** [test-HIGH-001.rs](../patches/test-HIGH-001.rs)
+*   **Proof of Concept:** [poc-HIGH-001.ts](../poc/poc-HIGH-001.ts)

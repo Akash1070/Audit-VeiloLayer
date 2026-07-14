@@ -1,4 +1,4 @@
-# NEW-005: `fund_native_open_position` Missing Atomic Pairing Validation
+# HIGH-005: `fund_native_open_position` Missing Atomic Pairing Validation
 
 **Severity:** HIGH  
 **Impact:** Unauthorized SOL drain from the position pool vault by a malicious or compromised relayer.  
@@ -48,3 +48,11 @@ require!(
     PrivacyError::MissingOpenPositionInstruction
 );
 ```
+
+---
+
+## 4. Associated Files
+
+*   **Remediation Patch:** [patch-HIGH-005.rs](../patches/patch-HIGH-005.rs)
+*   **Security Test:** [test-HIGH-005.rs](../patches/test-HIGH-005.rs)
+*   **Proof of Concept:** [poc-HIGH-005.ts](../poc/poc-HIGH-005.ts)
